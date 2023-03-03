@@ -13,30 +13,39 @@ def run_clustering(n_cluster):
 
     print(data)
 
+    # select logitude dan latitude
     x = data.iloc[:,1:3]
 
     print(x)
 
+    # modelling
     kmeans = KMeans(n_cluster)
     kmeans.fit(x)
 
+    # calculate prediction
     identified_clusters = kmeans.fit_predict(x)
 
     print(identified_clusters)
 
+    # copy data ke variable baru
     data_with_clusters = data.copy()
 
+    # bikin kolom baru bernama cluster
     data_with_clusters['Clusters'] = identified_clusters
 
+    # bikin plot scatter
     plt.scatter(data_with_clusters['Longitude'], data_with_clusters['Latitude'], c=data_with_clusters['Clusters'], cmap='rainbow')
 
+    # label plot
     plt.title('Clustered Country using K-Means')
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
 
+    # anotasi plot
     for i, txt in enumerate(data_with_clusters['Country']):
         plt.annotate(txt, (x.loc[i, 'Longitude'], x.loc[i, 'Latitude']))
 
+    # save image plot
     plt.savefig('output/clustered_country.png')
 
 if __name__ == '__main__':
